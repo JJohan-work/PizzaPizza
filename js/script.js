@@ -24,11 +24,11 @@ Cart.prototype.addToOrder = function(pizza) {
 
 function Pizza() {
   this.size = "";
-  this.crust = "";
+  this.crusts = "";
   this.cFlavor = "";
   this.sauce = "";
   this.cheese = "";
-  this.toppings = {meat:[],vegg:[]};
+  this.toppings = [];
   this.specials = "";
   this.cost = 0;
 }
@@ -38,29 +38,19 @@ Pizza.calcprice = function() {
 }
 
 Pizza.prototype.add = function(type,stuff) {
-  if (type == "meat" || type == "vegg") this.toppings.type.push(stuff);
-
-  this.type = stuff;
+  if (type === "toppings" && this.toppings.includes(stuff) !== true) this.toppings.push(stuff);
+  else if (type !== "toppings") this[type] = stuff;
 };
 
 const PriceBook = {
   sizes : {party:"50",large:"30",medium:"20",personal:"10",single:"4"},
   crusts: {handtoss:"3",thin:"2",stuff:"4",orig:"2"},
-  flavor: {garlic:"3",toast:"3",cheese:"5"},
+  cFlavor: {garlic:"3",toast:"3",cheese:"5"},
   sauce : {mar:"2",garlic:"1",barbaque:"3",buffalo:"1"},
   cheese: {light:"0",regular:"2",extra:"5"},
-  topping:
-  {
-    meats: {pepperoni:"4",italian:"5",meatball:"4",ham:"6",bacon:"6",chicken:"3",beef:"4",pork:"4"},
-    veg: {mushrooms:"2",onions:"1",olives:"2",bellPeppers:"2",bananaPeppers:"3",pineapple:"4",jalapeno:"3",tomato:"2",spinach:"1"}
-  },
+  toppings: {meats: {pepperoni:"4",italian:"5",meatball:"4",ham:"6",bacon:"6",chicken:"3",beef:"4",pork:"4",mushrooms:"2",onions:"1",olives:"2",bellPeppers:"2",bananaPeppers:"3",pineapple:"4",jalapeno:"3",tomato:"2",spinach:"1"}},
   specials: {anchovies:"8",will:"4"}
 }
-
-
-
-
-
 
 
 
@@ -88,6 +78,11 @@ $(document).ready(function(){
 
   $(".opencart").on("click", function() {
     //fill cart with current pizzas in order
+    $("#cart>ul").html("");
+    for (i=0;i<cart.items.length;i++) {
+      console.log(cart.items[i]);
+      $("#cart>ul").append(`<li class="${i}"><h3>${cart.items[i].crusts} ${cart.items[i].size} Pizza</h3></li>`)
+    }
     $("#cart").show();
   });
 
@@ -100,7 +95,6 @@ $(document).ready(function(){
   $("#makepizza").on("click", function() {
     $(".pizzamaker").show();
     cart.setActive(new Pizza())
-    console.log(cart)
     //set that pizza as active object to modify
   });
 
@@ -108,10 +102,16 @@ $(document).ready(function(){
     $(".pizzamaker").hide();
     cart.addToOrder(cart.active)
     cart.setActive({})
-    console.log(cart)
-    //delete current pizza object
-    //set active object to none
   });
+
+  $("#control>div>ul>li").on("click", function() {
+    const itemToAdd = this.getAttribute("id");
+    const parent2 = $(`#${itemToAdd}`).parent().parent();
+    const type = parent2[0].getAttribute("id");
+    cart.active.add(type, itemToAdd);
+    console.log(cart);
+    // console.log(`type:${type} item:${itemToAdd}`);
+  })
 
   $("#cancelpizza").on("click", function() {
     $(".pizzamaker").hide();
