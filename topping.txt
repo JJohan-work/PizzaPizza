@@ -1,0 +1,58 @@
+sizes:
+
+Party - 30inch
+Large - 20inch
+Medium - 15inch
+Personal - 10inch
+Single slice - slice of 20 inch
+
+
+Crusts:
+hand tossed
+thin 'N Crispy
+Stuffed Crusts
+Original Pan
+
+Crust Flavor:
+garlic buttery
+toasted parmesan
+cheesy 'n' loaded
+
+Sauce:
+Classic marinara
+Garlic parmesan
+barbeque
+buffalo
+
+
+Cheese:
+regular Cheese
+extre Cheese
+light cheese
+
+toppings:
+  Meats:
+    pepperoni
+    italian sausage
+    meatball
+    ham
+    bacon
+    grilled chicken
+    beef
+    pork
+
+  Veggies:
+    mushrooms
+    red onions
+    mediterranean black olives
+    green bell peppers
+    banana peppers
+    pineapple
+    jalapeno peppers
+    roma tomatoes
+    roasted spinach
+
+  Specials:
+    anchovies
+    the will to live
+
