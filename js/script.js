@@ -1,14 +1,25 @@
 function Cart() {
   this.items = [];
+  this.currentindex = 0;
   this.total = {};
+  this.active = {};
 }
 
 Cart.prototype.getTotal = function() {
   let total = 0;
   this.items.forEach(item => {
-    total += item.cost
+    total += item.cost;
   });
   this.total = total;
+}
+
+Cart.prototype.setActive = function(pizza) {
+  this.active = pizza;
+}
+
+Cart.prototype.addToOrder = function(pizza) {
+  this.items[this.currentindex] = pizza;
+  this.currentindex += 1;
 }
 
 function Pizza() {
@@ -60,8 +71,11 @@ $(document).ready(function(){
   $("#control>div").hide();
   $("#control>div.0").show();
   $("#cart").hide();
+  $(".pizzamaker").hide();
 
   let controlCurrent = 0;
+
+  let cart = new Cart();
 
   $(".control").on("click", function() {
     if (this.getAttribute("id") == "back" && controlCurrent > 0) controlCurrent -= 1;
@@ -73,10 +87,36 @@ $(document).ready(function(){
   });
 
   $(".opencart").on("click", function() {
+    //fill cart with current pizzas in order
     $("#cart").show();
   });
 
   $("#closeCart").on("click", function() {
     $("#cart").hide();
   });
+
+
+  
+  $("#makepizza").on("click", function() {
+    $(".pizzamaker").show();
+    cart.setActive(new Pizza())
+    console.log(cart)
+    //set that pizza as active object to modify
+  });
+
+  $("#addpizza").on("click", function() {
+    $(".pizzamaker").hide();
+    cart.addToOrder(cart.active)
+    cart.setActive({})
+    console.log(cart)
+    //delete current pizza object
+    //set active object to none
+  });
+
+  $("#cancelpizza").on("click", function() {
+    $(".pizzamaker").hide();
+    //delete current pizza object
+    //set active object to none
+  });
+
 });
