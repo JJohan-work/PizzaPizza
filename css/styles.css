@@ -3,7 +3,7 @@ body {
   text-align: center;
 }
 
-main {
+.pizzamaker {
   border:2px solid black;
   height: 90vh;
   width:80vw;
@@ -21,7 +21,7 @@ main {
   border: 20px solid rgb(226, 205, 177);
   margin-right: auto;
   margin-left: auto;
-  margin-top: 10vh;
+  margin-top: 20px;
 }
 
 #control {
@@ -32,10 +32,58 @@ main {
   bottom: 0px;
   border-top: 20px solid rgb(226, 205, 177);
   display: flex;
-  overflow-x: scroll;
 }
 
 #control>div {
-  min-width:70vw;
+  width:70vw;
+}
+
+#control>button {
+  width:5vw;
+  border: none;
+  background-color: rgb(226, 205, 177);
+}
+
+#control>div>ul {
+  display: flex;
+  list-style: none;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+#control>div>ul>li {
+  flex-grow: 1;
+  min-height: 60px;
+  border:2px solid black;
+  margin:5px;
+  border-radius: 20px;
+}
+
+#control>div>ul>li:hover {
+  position: relative;
+  bottom:5px;
+  right:5px;
+  box-shadow: 5px 5px black;
+}
+
+#control>div>ul>li:active {
+  position: relative;
+  bottom:3px;
+  right:3px;
+  box-shadow: 3px 3px black; 
+}
+#cart {
+  position: fixed;
+  background-color: burlywood;
+  width:85vw;
+  height:90vh;
+  left:7.75vw;
+  top:5vh;
   border: 2px solid black;
+  border-radius: 100px;
+}
+
+
+.hidden {
+  display: none;
 }

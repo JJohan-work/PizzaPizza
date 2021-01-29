@@ -9,6 +9,25 @@
 
 * * *
 
+## Setup instructions:  
+* Go to [Github Pages](https://jjohan-work.github.io/pizzaParlor) to see webpage
+#### Alt
+* Clone Repo
+* Open index.html in browser
+
+* * *
+## Specs:
+### Describe: Cart
+#### Test: Creates the cart object that holds all added pizzas
+
+### Describe: Cart.getTotal
+#### Test: gets the total price from the items in the cart
+
+### Describe: Pizza
+
+### Describe: 
+* * *
+
 ## Technologies used
 * HTML
 * CSS
@@ -16,14 +35,6 @@
 * Git and Github
 * JavaScript
 * JQuery
-
-* * *
-
-## Setup instructions:  
-* Go to [Github Pages](https://jjohan-work.github.io/pizzaParlor) to see webpage
-#### Alt
-* Clone Repo
-* Open index.html in browser
 
 * * *
 
