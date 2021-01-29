@@ -62,7 +62,18 @@ const PriceBook = {
   specials: {anchovies:"8",will:"4"}
 }
 
+function Dis() {
+  this.converter = {party:"Party",large:"Large",medium:"Medium",personal:"Personal",slice:"Single Slice",handtoss:"Hand Tossed",thin:"Thin 'N Crispy" ,stuffed:"Stuffed Crust",orig:"Original Pan",garlicButtery:"Garlic Buttery",toast:"Toasted Parmesan",cheese:"Cheesy 'N Loaded",mar:"Classic Marinara",garlicParmesan:"Garlic Parmesan",barbaque:"Barbeque",buffalo:"Buffalo",light:"Light",regular:"Cheese",extra:"Extra",pepperoni:"Pepperoni",italian:"Italian Sausage",meatball:"Meatball",ham:"Ham",bacon:"Bacon",chicken:"Grilled Chicken",beef:"Beef",pork:"Pork",mushrooms:"Mushrooms",onions:"Red Onions",olives:"Mediterranean Black Olives",bellPeppers:"Green Bell Peppers",bananaPeppers:"Banana Peppers",pineapple:"Pineapple",jalapeno:"Jalapeno Peppers",tomato:"Roma Tomatoes",spinach:"Roasted Spinach",anchovies:"Anchovies",will:"Will to Live"}
+  this.controlCurrent = 0;
+}
 
+Dis.prototype.convert = function(item) {
+  return this.converter[item]
+}
+
+Dis.prototype.resetmenu = function() {
+  this.controlCurrent = 0;
+}
 
 
 
@@ -73,16 +84,15 @@ $(document).ready(function(){
   $("#cart").hide();
   $(".pizzamaker").hide();
 
-  let controlCurrent = 0;
-
   let cart = new Cart();
+  let dis = new Dis;
 
   $(".control").on("click", function() {
-    if (this.getAttribute("id") == "back" && controlCurrent > 0) controlCurrent -= 1;
-    else if (this.getAttribute("id") == "next" && controlCurrent < 6) controlCurrent += 1;
+    if (this.getAttribute("id") == "back" && dis.controlCurrent > 0) dis.controlCurrent -= 1;
+    else if (this.getAttribute("id") == "next" && dis.controlCurrent < 6) dis.controlCurrent += 1;
 
     $("#control>div").hide();
-    $(`#control>div.${controlCurrent}`).show()
+    $(`#control>div.${dis.controlCurrent}`).show()
 
   });
 
@@ -91,7 +101,11 @@ $(document).ready(function(){
     $("#cart>ul").html("");
     for (i=0;i<cart.items.length;i++) {
       console.log(cart.items[i]);
-      $("#cart>ul").append(`<li class="${i}"><h3>${cart.items[i].crusts} ${cart.items[i].size} Pizza  Cost:${cart.items[i].cost}</h3></li>`)
+      topping = ""
+      cart.items[i].toppings.forEach(top => {
+        topping += `<li>${dis.convert(top)}</li>`
+      })
+      $("#cart>ul").append(`<li class="${i}"><h3>${dis.convert(cart.items[i].cFlavor)} ${dis.convert(cart.items[i].crusts)} ${dis.convert(cart.items[i].size)} pizza  Cost:${cart.items[i].cost}</h3><ul><h4>Toppings</h4>${topping}<li>Specials: ${dis.convert(cart.items[i].specials)}</li></ul></li>`)
     }
     cart.getTotal();
     $("#carttotal").text(cart.total)
@@ -103,7 +117,9 @@ $(document).ready(function(){
   });
   
   $("#makepizza").on("click", function() {
-    controlCurrent = 0;
+    dis.resetmenu();
+    $("#control>div").hide();
+    $(`#control>div.${dis.controlCurrent}`).show()
     $(".pizzamaker").show();
     cart.setActive(new Pizza())
     //set that pizza as active object to modify
