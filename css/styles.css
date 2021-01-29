@@ -49,6 +49,7 @@ body {
   list-style: none;
   width: 100%;
   flex-wrap: wrap;
+  padding-left: 5px;
 }
 
 #control>div>ul>li {
@@ -56,6 +57,7 @@ body {
   min-height: 60px;
   border:2px solid black;
   margin:5px;
+  margin-left: 0;
   border-radius: 20px;
 }
 

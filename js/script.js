@@ -65,7 +65,7 @@ $(document).ready(function(){
 
   $(".control").on("click", function() {
     if (this.getAttribute("id") == "back" && controlCurrent > 0) controlCurrent -= 1;
-    else if (this.getAttribute("id") == "next" && controlCurrent < 5) controlCurrent += 1;
+    else if (this.getAttribute("id") == "next" && controlCurrent < 6) controlCurrent += 1;
 
     $("#control>div").hide();
     $(`#control>div.${controlCurrent}`).show()
