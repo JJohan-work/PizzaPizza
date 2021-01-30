@@ -59,11 +59,11 @@ Pizza.prototype.ToggleTop = function(stuff) {
 }
 
 const PriceBook = {
-  sizes : {party:"50.0",large:"30.0",medium:"20.0",personal:"10.0",slice:"4.0"},
+  sizes : {party:"50.0",large:"30.0",medium:"20.0",personal:"10.0",slice:"2.5"},
   crusts: {handtoss:"2.5",thin:"1.5",stuffed:"3.5",orig:"1.5"},
   cFlavor: {garlicButtery:"0.3",toast:"0.8",cheese:"0.45"},
   sauce : {mar:"0.1",garlicParmesan:"1",barbaque:"0.35",buffalo:"0.5"},
-  cheese: {light:"0.1",regular:"2",extra:"5.25"},
+  cheese: {light:"0.1",regular:"2",extra:"2.25"},
   toppings: {pepperoni:"2.5",italian:"1.5",meatball:"0.75",ham:"3.2",bacon:"4.50",chicken:"0.2",beef:"0.35",pork:"0.2",mushrooms:"0.2",onions:"0.4",olives:"0.7",bellPeppers:"0.2",bananaPeppers:"0.45",pineapple:"0.44",jalapeno:"0.55",tomato:"0.5",spinach:"0.2"},
   specials: {anchovies:"4.5",will:"-20",none:"0.0"}
 }
@@ -77,7 +77,7 @@ function Dis() {
   this.crustcolor = "#ffb428";
   this.covering = "burlywood";
   this.cheese = 'url("../img/lCheese.svg")';
-  this.topping = [];
+  this.topping = ["",""];
 }
 
 Dis.prototype.new = function() {
@@ -190,10 +190,26 @@ Dis.prototype.AddtoPizza = function(typeToAdd,itemToAdd) {
     }
     change.style.setProperty('--covering',this.covering);
   }
-  else if (typeToAdd == "toppings" || typeToAdd == "cheese") {
+  else if (typeToAdd == "cheese") {
+    switch(itemToAdd) {
+      case "light":
+        this.cheese = 'url("../img/lCheese.svg")';
+        break;
+      case "regular":
+        this.cheese = 'url("../img/rCheese.svg")';
+        break;
+      case "extra":
+        this.cheese = 'url("../img/eCheese.svg")';
+        break;
+    }
+    document.documentElement.style.setProperty('--cheese',this.cheese);
+  }
+  else if (typeToAdd == "toppings") {
     this.addtopping(itemToAdd);
   }
+
   }
+
 
 
 
@@ -212,8 +228,11 @@ $(document).ready(function(){
     else if (this.getAttribute("id") == "next" && dis.controlCurrent < 6) dis.controlCurrent += 1;
 
     $("#control>div").hide();
-    $(`#control>div.${dis.controlCurrent}`).show()
+    $(`#control>div.${dis.controlCurrent}`).show();
 
+    if (dis.controlCurrent == 6) $(this).css('visibility', 'hidden');
+    else if (dis.controlCurrent == 0) $(this).css('visibility', 'hidden');
+    else $(".control").css('visibility', 'visible');
   });
 
   $(".opencart").on("click", function() {
@@ -239,6 +258,7 @@ $(document).ready(function(){
   $("#makepizza").on("click", function() {
     dis.resetmenu();
     $("#control>div").hide();
+    $("#back").css('visibility','hidden')
     $(`#control>div.${dis.controlCurrent}`).show()
     $(".pizzamaker").show();
     cart.setActive(new Pizza())

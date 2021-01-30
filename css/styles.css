@@ -4,6 +4,7 @@ body {
   font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
+
 main{
   display: flex;
   flex-direction: column;
@@ -43,9 +44,10 @@ main button:hover {
   --pizza-size: 540px;
   --pizza-size2: 500px;
   --pizza-crust: 20px;
-  --crust-type: #ffb428;
+  --crust-type: burlywood;
   --covering: burlywood;
-  --cheese: url("")
+  --cheese: url("");
+  --topping: url("");
 }
 
 #completepizza {
@@ -95,6 +97,15 @@ main button:hover {
   background-image: var(--cheese);
   background-size:cover;
   z-index: 3;
+}
+
+#pizzacheese {
+  position: absolute;
+  width: var(--pizza-size2);
+  height:var(--pizza-size2);
+  background-image: var(--cheese);
+  background-size:cover;
+  z-index: 2;
 }
 
 
@@ -169,6 +180,7 @@ main button:hover {
   position: fixed;
   background-color: rgb(240, 223, 200);
   width:85vw;
+  min-height: 500px;
   max-height: 90vh;
   left:7.75vw;
   top:5vh;
