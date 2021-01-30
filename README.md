@@ -10,7 +10,7 @@
 * * *
 
 ## Setup instructions:  
-* Go to [Github Pages](https://jjohan-work.github.io/pizzaParlor) to see webpage
+* Go to [Github Pages](https://jjohan-work.github.io/PizzaPizza) to see webpage
 #### Alt
 * Clone Repo
 * Open index.html in browser
@@ -22,6 +22,7 @@
 
 ### Describe: Cart.getTotal
 #### Test: gets the total price from the items in the cart
+
 
 ### Describe: Pizza
 
