@@ -69,8 +69,13 @@ const PriceBook = {
 }
 
 function Dis() {
-  this.converter = {party:"Party",large:"Large",medium:"Medium",personal:"Personal",slice:"Single Slice",handtoss:"Hand Tossed",thin:"Thin 'N Crispy" ,stuffed:"Stuffed Crust",orig:"Original Pan",garlicButtery:"Garlic Buttery",toast:"Toasted Parmesan",cheese:"Cheesy 'N Loaded",mar:"Classic Marinara",garlicParmesan:"Garlic Parmesan",barbaque:"Barbeque",buffalo:"Buffalo",light:"Light",regular:"Cheese",extra:"Extra",pepperoni:"Pepperoni",italian:"Italian Sausage",meatball:"Meatball",ham:"Ham",bacon:"Bacon",chicken:"Grilled Chicken",beef:"Beef",pork:"Pork",mushrooms:"Mushrooms",onions:"Red Onions",olives:"Mediterranean Black Olives",bellPeppers:"Green Bell Peppers",bananaPeppers:"Banana Peppers",pineapple:"Pineapple",jalapeno:"Jalapeno Peppers",tomato:"Roma Tomatoes",spinach:"Roasted Spinach",anchovies:"Anchovies",will:"Will to Live",none:"none"}
+  this.converter = {party:"Party",large:"Large",medium:"Medium",personal:"Personal",slice:"Single Slice",handtoss:"Hand Tossed",thin:"Thin 'N Crispy" ,stuffed:"Stuffed Crust",orig:"Original Pan",garlicButtery:"Garlic Buttery",toast:"Toasted Parmesan",cheese:"Cheesy 'N Loaded",mar:"Classic Marinara",garlicParmesan:"Garlic Parmesan",barbaque:"Barbeque",buffalo:"Buffalo",light:"Light",regular:"Cheese",extra:"Extra",pepperoni:"Pepperoni",italian:"Italian Sausages",meatball:"Meatballs",ham:"Ham",bacon:"Bacon",chicken:"Grilled Chicken",beef:"Beef",pork:"Pork",mushrooms:"Mushrooms",onions:"Red Onions",olives:"Mediterranean Black Olives",bellPeppers:"Green Bell Peppers",bananaPeppers:"Banana Peppers",pineapple:"Pineapple",jalapeno:"Jalapeno Peppers",tomato:"Roma Tomatoes",spinach:"Roasted Spinach",anchovies:"Anchovies",will:"Will to Live",none:"none"}
   this.controlCurrent = 0;
+  this.pizzaSize = 500;
+  this.pizzaborder = 20;
+  this.crustcolor = "hsl(34,45,79)";
+  this.covering = "burlywood"
+  this.cheese = 'url("../img/lCheese.svg")'
 }
 
 Dis.prototype.convert = function(item) {
@@ -80,6 +85,98 @@ Dis.prototype.convert = function(item) {
 Dis.prototype.resetmenu = function() {
   this.controlCurrent = 0;
 }
+
+Dis.prototype.AddtoPizza = function(typeToAdd,itemToAdd) {
+  change = document.documentElement
+  console.log(typeToAdd);
+  console.log(itemToAdd);
+  if (typeToAdd == "size") {
+    $("#pizzaslice").hide();
+    switch(itemToAdd) {
+      case "party":
+        this.pizzaSize = 600
+        break;
+      case "large":
+        this.pizzaSize = 500;
+        break;
+      case "personal":
+        this.pizzaSize = 200;
+        break;
+      case "slice":
+        $("#pizzaslice").show();
+      case "medium":
+        this.pizzaSize = 400;
+        break;
+    }
+    change.style.setProperty('--pizza-size',`${this.pizzaSize+this.pizzaborder*2}px`);
+    change.style.setProperty('--pizza-size2',`${this.pizzaSize}px`);
+  }
+  else if (typeToAdd == "crusts") {
+    switch(itemToAdd) {
+      case "handtoss":
+        this.pizzaborder = 25;
+        break;
+      case "thin":
+        this.pizzaborder = 10;
+        break;
+      case "stuffed":
+        this.pizzaborder = 40;
+        break;
+      case "orig":
+        this.pizzaborder = 20;
+        break;
+    }
+    change.style.setProperty('--pizza-crust',`${this.pizzaborder}px`);
+    change.style.setProperty('--pizza-size',`${this.pizzaSize+this.pizzaborder*2}px`);
+  }
+  else if (typeToAdd == "cFlavor") {
+    switch(itemToAdd) {
+      case "garlicButtery":
+        this.crustcolor = `#e2cdb1`;
+        break;
+      case "toast":
+        this.crustcolor = `#e4924f`;
+        break;
+      case "cheese":
+        this.crustcolor = `#ffb428`;
+        break;
+    }
+    change.style.setProperty('--crust-type',this.crustcolor);
+  }
+  else if (typeToAdd == "sauce") {
+    switch(itemToAdd) {
+      case "mar":
+        this.covering = `#ad2907`;
+        break;
+      case "garlicParmesan":
+        this.covering = `#dec670`;
+        break;
+      case "barbaque":
+        this.covering = `#540001`;
+        break;
+      case "buffalo":
+        this.covering = `#ee5b00`;
+        break;
+    }
+    change.style.setProperty('--covering',this.covering);
+  }
+  else if (typeToAdd == "cheese") {
+    switch(itemToAdd) {
+      case "light":
+        this.cheese = 'url("../img/lCheese.svg")';
+        break;
+      case "regular":
+        this.cheese = 'url("../img/rCheese.svg")';
+        break;
+      case "extra":
+        this.cheese = 'url("../img/eCheese.svg")';
+        break;
+    }
+    change.style.setProperty('--cheese',this.cheese);
+  }
+  }
+
+
 
 $(document).ready(function(){
 
@@ -127,16 +224,19 @@ $(document).ready(function(){
     $(`#control>div.${dis.controlCurrent}`).show()
     $(".pizzamaker").show();
     cart.setActive(new Pizza())
-    //set that pizza as active object to modify
+    $("#completepizza").css("top","0px")
   });
 
   $("#addpizza").on("click", function() {
     if (cart.active.size == "" || cart.active.crusts == "" || cart.active.cFlavor == "" || cart.active.sauce == "" || cart.active.cheese == "" || cart.active.toppings.length == 0) alert("Completely fill out pizza before submitting")
     else {
-      $(".pizzamaker").hide();
-      cart.active.calcprice(PriceBook);
-      cart.addToOrder(cart.active);
-      cart.setActive({});
+      $("#completepizza").css("top","1000px")
+      setTimeout(function(){
+        $(".pizzamaker").hide();
+        cart.active.calcprice(PriceBook);
+        cart.addToOrder(cart.active);
+        cart.setActive({});
+    }, 2000);
     }
   });
 
@@ -152,15 +252,17 @@ $(document).ready(function(){
       $(`#${itemToAdd}`).siblings().removeClass("selected");
       $(this).addClass("selected");
       cart.active.add(type, itemToAdd);
+      dis.AddtoPizza(type,itemToAdd);
     }
     console.log(cart);
     // console.log(`type:${type} item:${itemToAdd}`);
   })
 
   $("#cancelpizza").on("click", function() {
-    $(".pizzamaker").hide();
-    //delete current pizza object
-    //set active object to none
+    $("#completepizza").css("top","1000px");
+    setTimeout(function(){
+      $(".pizzamaker").hide();
+    }, 2000);
   });
 
 });

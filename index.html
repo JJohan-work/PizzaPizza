@@ -19,8 +19,13 @@
   <div class="pizzamaker">
     <button id="cancelpizza">Cancel</button>
     <button id="addpizza">Add to Cart</button>
-    <div id="pizza"></div>
-
+    <div id="completepizza">
+      <div id="pizzaslice" class="hidden"></div>
+      <div id="toppinghide">
+        <div id="pizzatoppings"></div>
+      </div>
+      <div id="pizza"></div>
+    </div>
     <div id="control">
       <button id="back" class="control">Previous</button>
       <div id="size" class="0">
@@ -54,7 +59,7 @@
       </div>
 
       <div id="sauce" class="3">
-        <h3>Choose A Pizza Sauce</h3>
+        <h3>Choose One Pizza Sauce</h3>
         <ul>
           <li id="mar">Classic Marinara</li>
           <li id="garlicParmesan">Garlic Parmesan</li>
@@ -64,7 +69,7 @@
       </div>
 
       <div id="cheese" class="4">
-        <h3>Choose A Cheese Type</h3>
+        <h3>Choose One Cheese Type</h3>
         <ul>
           <li id="light">Light Cheese</li>
           <li id="regular">Cheese</li>
@@ -73,10 +78,10 @@
       </div>
 
       <div id="toppings" class="5">
-        <h3>Choose Your Toppings</h3>
+        <h3>Choose At Least One Toppings</h3>
         <ul id="meat">
           <li id="pepperoni">Pepperoni</li>
-          <li id="italian">italian Sausage</li>
+          <li id="italian">Italian Sausage</li>
           <li id="meatball">Meatball</li>
           <li id="ham">Ham</li>
           <li id="bacon">Bacon</li>

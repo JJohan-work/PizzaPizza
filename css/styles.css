@@ -14,16 +14,66 @@ body {
   overflow: hidden;
 }
 
-#pizza {
-  width: 500px;
-  height:500px;
-  border-radius: 500px;
-  background-color: burlywood;
-  border: 20px solid rgb(226, 205, 177);
+:root {
+  --pizza-size: 540px;
+  --pizza-size2: 500px;
+  --pizza-crust: 20px;
+  --crust-type: #ffb428;
+  --covering: burlywood;
+  --cheese: url("")
+}
+
+#completepizza {
+  position: relative;
+  width: var(--pizza-size);
+  height:var(--pizza-size);
+  top: 1000px;
   margin-right: auto;
   margin-left: auto;
   margin-top: 20px;
+  transition: top 2s;
 }
+
+#pizza {
+  position: absolute;
+  width: var(--pizza-size2);
+  height:var(--pizza-size2);
+  border-radius: var(--pizza-size2);
+  background-color: var(--covering);
+  border: var(--pizza-crust) solid var(--crust-type);
+}
+
+/* pizza styles and toppings */
+#pizzaslice {
+  position: absolute;
+  width: var(--pizza-size);
+  height:var(--pizza-size);
+  background-image: url("../img/slice.svg");
+  background-size:cover;
+  z-index: 5;
+}
+
+#toppinghide {
+  position: absolute;
+  width: var(--pizza-size2);
+  height:var(--pizza-size2);
+  border:var(--pizza-crust) solid rgba(0, 0, 0, 0);
+  border-radius: var(--pizza-size);
+  overflow: hidden;
+  z-index:3;
+}
+
+#pizzatoppings {
+  position: absolute;
+  width: var(--pizza-size2);
+  height:var(--pizza-size2);
+  background-image: var(--cheese);
+  background-size:cover;
+  z-index: 3;
+}
+
+
+
 
 #control {
   background-color: burlywood;
@@ -34,6 +84,7 @@ body {
   bottom: 0px;
   border-top: 20px solid rgb(226, 205, 177);
   display: flex;
+  z-index:10;
 }
 
 #control>div {
@@ -52,17 +103,20 @@ body {
   list-style: none;
   width: 100%;
   flex-wrap: wrap;
+  justify-content:center;
   padding-left: 5px;
 }
 
 #control>div>ul>li {
-  flex-grow: 1;
-  min-height: 60px;
   border:2px solid black;
+  width:100px;
+  height:75px;
   margin:5px;
   margin-left: 0;
   border-radius: 20px;
   user-select: none;
+  line-height: 25px;
+  text-align: center;
 }
 
 #control>div>ul>li:hover {
@@ -145,3 +199,7 @@ button#checkout {
   border:none;
 }
 
+
+.hidden {
+  display: none;
+}
