@@ -59,7 +59,7 @@ Pizza.prototype.ToggleTop = function(stuff) {
 }
 
 const PriceBook = {
-  sizes : {party:"50.0",large:"30.0",medium:"20.0",personal:"10.0",single:"4.0"},
+  sizes : {party:"50.0",large:"30.0",medium:"20.0",personal:"10.0",slice:"4.0"},
   crusts: {handtoss:"2.5",thin:"1.5",stuffed:"3.5",orig:"1.5"},
   cFlavor: {garlicButtery:"0.3",toast:"0.8",cheese:"0.45"},
   sauce : {mar:"0.1",garlicParmesan:"1",barbaque:"0.35",buffalo:"0.5"},
@@ -69,13 +69,31 @@ const PriceBook = {
 }
 
 function Dis() {
-  this.converter = {party:"Party",large:"Large",medium:"Medium",personal:"Personal",slice:"Single Slice",handtoss:"Hand Tossed",thin:"Thin 'N Crispy" ,stuffed:"Stuffed Crust",orig:"Original Pan",garlicButtery:"Garlic Buttery",toast:"Toasted Parmesan",cheese:"Cheesy 'N Loaded",mar:"Classic Marinara",garlicParmesan:"Garlic Parmesan",barbaque:"Barbeque",buffalo:"Buffalo",light:"Light",regular:"Cheese",extra:"Extra",pepperoni:"Pepperoni",italian:"Italian Sausages",meatball:"Meatballs",ham:"Ham",bacon:"Bacon",chicken:"Grilled Chicken",beef:"Beef",pork:"Pork",mushrooms:"Mushrooms",onions:"Red Onions",olives:"Mediterranean Black Olives",bellPeppers:"Green Bell Peppers",bananaPeppers:"Banana Peppers",pineapple:"Pineapple",jalapeno:"Jalapeno Peppers",tomato:"Roma Tomatoes",spinach:"Roasted Spinach",anchovies:"Anchovies",will:"Will to Live",none:"none"}
+  this.converter = {party:"Party Pizza",large:"Large Pizza",medium:"Medium Pizza",personal:"Personal Pizza",slice:"Single Slice",handtoss:"Hand Tossed",thin:"Thin 'N Crispy" ,stuffed:"Stuffed Crust",orig:"Original Pan",garlicButtery:"Garlic Buttery",toast:"Toasted Parmesan",cheese:"Cheesy 'N Loaded",mar:"Classic Marinara",garlicParmesan:"Garlic Parmesan",barbaque:"Barbeque",buffalo:"Buffalo",light:"Light",regular:"Cheese",extra:"Extra",pepperoni:"Pepperoni",italian:"Italian Sausages",meatball:"Meatballs",ham:"Ham",bacon:"Bacon",chicken:"Grilled Chicken",beef:"Beef",pork:"Pork",mushrooms:"Mushrooms",onions:"Red Onions",olives:"Mediterranean Black Olives",bellPeppers:"Green Bell Peppers",bananaPeppers:"Banana Peppers",pineapple:"Pineapple",jalapeno:"Jalapeno Peppers",tomato:"Roma Tomatoes",spinach:"Roasted Spinach",anchovies:"Anchovies",will:"Will to Live",none:"none"}
+  this.visualconverter = {light:"lCheese.svg",regular:"rCheese.svg",extra:"eCheese.svg",pepperoni:"pepperoni.svg",italian:"pepperoni.svg",meatball:"pepperoni.svg",ham:"meat2.svg",bacon:"meat2.svg",chicken:"chicken.svg",beef:"meat1.svg",pork:"meat1.svg",mushrooms:"mushroom.svg",onions:"onion.svg",olives:"olives.svg",bellPeppers:"pepper.svg",bananaPeppers:"pepper.svg",pineapple:"pinapple.svg",jalapeno:"pepper.svg",tomato:"tomato.svg",spinach:"green.svg"}
   this.controlCurrent = 0;
   this.pizzaSize = 500;
   this.pizzaborder = 20;
-  this.crustcolor = "hsl(34,45,79)";
-  this.covering = "burlywood"
-  this.cheese = 'url("../img/lCheese.svg")'
+  this.crustcolor = "#ffb428";
+  this.covering = "burlywood";
+  this.cheese = 'url("../img/lCheese.svg")';
+  this.topping = [];
+}
+
+Dis.prototype.new = function() {
+  this.pizzaSize = 500;
+  this.pizzaborder = 20;
+  this.crustcolor = "#ffb428";
+  this.covering = "burlywood";
+  this.cheese = '';
+  change.style.setProperty('--pizza-size',`${this.pizzaSize+this.pizzaborder*2}px`);
+  change.style.setProperty('--pizza-crust',`${this.pizzaborder}px`);
+  change.style.setProperty('--pizza-size2',`${this.pizzaSize}px`);
+  change.style.setProperty('--crust-type',this.crustcolor);
+  change.style.setProperty('--cheese',this.cheese);
+  change.style.setProperty('--covering',this.covering);
+  $("#pizzaslice").hide();
+  $(".selected").removeClass("selected");
 }
 
 Dis.prototype.convert = function(item) {
@@ -86,10 +104,22 @@ Dis.prototype.resetmenu = function() {
   this.controlCurrent = 0;
 }
 
+Dis.prototype.addtopping = function(itemToAdd) {
+  if (this.topping.includes(itemToAdd)) this.topping.splice(this.topping.indexOf(itemToAdd),1)
+  else this.topping.unshift(itemToAdd)
+  let addString = ""
+  for(i = 0; i < this.topping.length; i ++) {
+    addString += `url('../img/${this.visualconverter[this.topping[i]]}')`
+    if (i+1 !== this.topping.length) {addString += ",";}
+  }
+  document.documentElement.style.setProperty('--cheese',addString);
+  console.log(addString)
+};
+
+
 Dis.prototype.AddtoPizza = function(typeToAdd,itemToAdd) {
   change = document.documentElement
-  console.log(typeToAdd);
-  console.log(itemToAdd);
+  console.log(itemToAdd)
   if (typeToAdd == "size") {
     $("#pizzaslice").hide();
     switch(itemToAdd) {
@@ -160,19 +190,8 @@ Dis.prototype.AddtoPizza = function(typeToAdd,itemToAdd) {
     }
     change.style.setProperty('--covering',this.covering);
   }
-  else if (typeToAdd == "cheese") {
-    switch(itemToAdd) {
-      case "light":
-        this.cheese = 'url("../img/lCheese.svg")';
-        break;
-      case "regular":
-        this.cheese = 'url("../img/rCheese.svg")';
-        break;
-      case "extra":
-        this.cheese = 'url("../img/eCheese.svg")';
-        break;
-    }
-    change.style.setProperty('--cheese',this.cheese);
+  else if (typeToAdd == "toppings" || typeToAdd == "cheese") {
+    this.addtopping(itemToAdd);
   }
   }
 
@@ -201,13 +220,12 @@ $(document).ready(function(){
     //fill cart with current pizzas in order
     $("#cart>ul").html("");
     for (i=0;i<cart.items.length;i++) {
-      console.log(cart.items[i]);
       topping = ""
       cart.items[i].toppings.forEach(top => {
         topping += `<li>${dis.convert(top)}<span class="topcost">$${PriceBook.toppings[top]}</span></li>`
       })
       const special = cart.items[i].specials;
-      $("#cart>ul").append(`<li class="${i}"><h3>${dis.convert(cart.items[i].cFlavor)} ${dis.convert(cart.items[i].crusts)} ${dis.convert(cart.items[i].size)} pizza </h3><ul><h4>Toppings</h4>${topping}<li>Specials: ${dis.convert(cart.items[i].specials)}<span class="topcost">$${PriceBook.specials[special]}</span></li></ul><div class="itemAmount">Cost:$<span>${cart.items[i].cost}</span></li>`)
+      $("#cart>ul").append(`<li class="${i}"><h3>${dis.convert(cart.items[i].cFlavor)} ${dis.convert(cart.items[i].crusts)} ${dis.convert(cart.items[i].size)}</h3><ul><h4>Toppings</h4>${topping}<li>Specials: ${dis.convert(cart.items[i].specials)}<span class="topcost">$${PriceBook.specials[special]}</span></li></ul><div class="itemAmount">Cost:$<span>${cart.items[i].cost}</span></li>`)
     }
     cart.getTotal();
     $("#carttotal").html(`$${cart.total}`);
@@ -236,7 +254,8 @@ $(document).ready(function(){
         cart.active.calcprice(PriceBook);
         cart.addToOrder(cart.active);
         cart.setActive({});
-    }, 2000);
+        dis.new();
+    }, 1500);
     }
   });
 
@@ -252,9 +271,8 @@ $(document).ready(function(){
       $(`#${itemToAdd}`).siblings().removeClass("selected");
       $(this).addClass("selected");
       cart.active.add(type, itemToAdd);
-      dis.AddtoPizza(type,itemToAdd);
     }
-    console.log(cart);
+    dis.AddtoPizza(type,itemToAdd);
     // console.log(`type:${type} item:${itemToAdd}`);
   })
 
@@ -262,7 +280,7 @@ $(document).ready(function(){
     $("#completepizza").css("top","1000px");
     setTimeout(function(){
       $(".pizzamaker").hide();
-    }, 2000);
+    }, 1500);
   });
 
 });

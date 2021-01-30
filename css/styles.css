@@ -1,6 +1,29 @@
 body {
   background-color: brown;
   text-align: center;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+main{
+  display: flex;
+  flex-direction: column;
+}
+
+main button {
+  width: 400px;
+  height:180px;
+  border-radius: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 100px;
+  outline: none;
+  border:none;
+}
+
+main button:hover {
+  position: relative;
+  bottom:5px;
+  right:5px;
 }
 
 .pizzamaker {
@@ -9,8 +32,10 @@ body {
   height:90vh;
   width:80vw;
   border-radius: 50px;
+  background-color: #a52a2a;
   position: absolute;
   left:10vw;
+  top:50px;
   overflow: hidden;
 }
 
@@ -74,7 +99,7 @@ body {
 
 
 
-
+/* styling for pizza addition control panel ---------------------------- */
 #control {
   background-color: burlywood;
   width: 100%;
@@ -137,13 +162,14 @@ body {
   background-color:cornflowerblue;
 }
 
-/* cart stylings */
+
+/* cart stylings ---------------------------- */
 
 #cart {
   position: fixed;
   background-color: rgb(240, 223, 200);
   width:85vw;
-  height:90vh;
+  max-height: 90vh;
   left:7.75vw;
   top:5vh;
   border: 2px solid black;
@@ -192,6 +218,15 @@ body {
   height:5px;
 }
 
+#cart button{
+  font-size: 20px;
+}
+
+button#closeCart {
+  width: 100%;
+  border:none;
+}
+
 button#checkout {
   margin-top:20px;
   width:100%;
@@ -199,6 +234,9 @@ button#checkout {
   border:none;
 }
 
+#cart button:hover {
+  background-color:lightgrey;
+}
 
 .hidden {
   display: none;
