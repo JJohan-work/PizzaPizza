@@ -52,6 +52,12 @@ Pizza.prototype.add = function(type,stuff) {
   else if (type !== "toppings") this[type] = stuff;
 };
 
+Pizza.prototype.ToggleTop = function(stuff) {
+  if (this.toppings.includes(stuff)) {
+    this.toppings.splice(this.toppings.indexOf(stuff),1)
+  } else this.toppings.push(stuff)
+}
+
 const PriceBook = {
   sizes : {party:"50.0",large:"30.0",medium:"20.0",personal:"10.0",single:"4.0"},
   crusts: {handtoss:"2.5",thin:"1.5",stuffed:"3.5",orig:"1.5"},
@@ -136,9 +142,17 @@ $(document).ready(function(){
 
   $("#control>div>ul>li").on("click", function() {
     const itemToAdd = this.getAttribute("id");
-    const parent2 = $(`#${itemToAdd}`).parent().parent();
-    const type = parent2[0].getAttribute("id");
-    cart.active.add(type, itemToAdd);
+    const parent = $(`#${itemToAdd}`).parent().parent();
+    const type = parent[0].getAttribute("id");
+    if (type=="toppings") {
+      $(this).toggleClass("selected");
+      cart.active.ToggleTop(itemToAdd);
+    }
+    else {
+      $(`#${itemToAdd}`).siblings().removeClass("selected");
+      $(this).addClass("selected");
+      cart.active.add(type, itemToAdd);
+    }
     console.log(cart);
     // console.log(`type:${type} item:${itemToAdd}`);
   })

@@ -10,7 +10,7 @@
 * * *
 
 ## Setup instructions:  
-* Go to [Github Pages](https://jjohan-work.github.io/PizzaPizza) to see webpage
+* Go to [Github Pages](https://jjohan-work.github.io/PizzaPizza/.) to see webpage
 #### Alt
 * Clone Repo
 * Open index.html in browser
