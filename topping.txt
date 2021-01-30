@@ -6,34 +6,32 @@ Medium - 15inch
 Personal - 10inch
 Single slice - slice of 20 inch
 
-
 Crusts:
-hand tossed
-thin 'N Crispy
-Stuffed Crusts
-Original Pan
+  hand tossed
+  thin 'N Crispy
+  Stuffed Crusts
+  Original Pan
 
 Crust Flavor:
-garlic buttery
-toasted parmesan
-cheesy 'n' loaded
+  garlic buttery
+  toasted parmesan
+  cheesy 'n' loaded
 
 Sauce:
-Classic marinara
-Garlic parmesan
-barbeque
-buffalo
-
+  Classic marinara
+  Garlic parmesan
+  barbeque
+  buffalo
 
 Cheese:
-regular Cheese
-extre Cheese
-light cheese
+  regular Cheese
+  extre Cheese
+  light cheese
 
 toppings:
   Meats:
-    pepperoni
-    italian sausage
+    pepperoni:"4"
+    italian sausage:"5"
     meatball
     ham
     bacon
@@ -56,3 +54,4 @@ toppings:
     anchovies
     the will to live
 
+if (cart.active.size == "" || cart.active.crusts == "" || cart.active.cFlavor == "" || cart.active.sauce == "" || cart.active.cheese == "" || cart.active.toppings.length == 0) alert("Completely fill out pizza before submitting")

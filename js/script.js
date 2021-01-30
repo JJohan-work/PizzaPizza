@@ -8,9 +8,9 @@ function Cart() {
 Cart.prototype.getTotal = function() {
   let total = 0;
   this.items.forEach(item => {
-    total += item.cost;
+    total += parseFloat(item.cost);
   });
-  this.total = total;
+  this.total = total.toFixed(2);
 }
 
 Cart.prototype.setActive = function(pizza) {
@@ -29,22 +29,22 @@ function Pizza() {
   this.sauce = "";
   this.cheese = "";
   this.toppings = [];
-  this.specials = "";
+  this.specials = "none";
   this.cost = 0;
 }
 
 Pizza.prototype.calcprice = function(priceBook) {
   price = 0;
-  price += parseInt(priceBook.sizes[this.size]);
-  price += parseInt(priceBook.crusts[this.crusts]);
-  price += parseInt(priceBook.cFlavor[this.cFlavor]);
-  price += parseInt(priceBook.sauce[this.sauce]);
-  price += parseInt(priceBook.cheese[this.cheese]);
-  price += parseInt(priceBook.specials[this.specials]);
+  price += parseFloat(priceBook.sizes[this.size]);
+  price += parseFloat(priceBook.crusts[this.crusts]);
+  price += parseFloat(priceBook.cFlavor[this.cFlavor]);
+  price += parseFloat(priceBook.sauce[this.sauce]);
+  price += parseFloat(priceBook.cheese[this.cheese]);
+  price += parseFloat(priceBook.specials[this.specials]);
   this.toppings.forEach(top => {
-    price += parseInt(priceBook.toppings[top])
+    price += parseFloat(priceBook.toppings[top])
   })
-  this.cost = price;
+  this.cost = price.toFixed(2);
 }
 
 Pizza.prototype.add = function(type,stuff) {
@@ -53,17 +53,17 @@ Pizza.prototype.add = function(type,stuff) {
 };
 
 const PriceBook = {
-  sizes : {party:"50",large:"30",medium:"20",personal:"10",single:"4"},
-  crusts: {handtoss:"3",thin:"2",stuffed:"4",orig:"2"},
-  cFlavor: {garlicButtery:"3",toast:"3",cheese:"5"},
-  sauce : {mar:"2",garlicParmesan:"1",barbaque:"3",buffalo:"1"},
-  cheese: {light:"0",regular:"2",extra:"5"},
-  toppings: {pepperoni:"4",italian:"5",meatball:"4",ham:"6",bacon:"6",chicken:"3",beef:"4",pork:"4",mushrooms:"2",onions:"1",olives:"2",bellPeppers:"2",bananaPeppers:"3",pineapple:"4",jalapeno:"3",tomato:"2",spinach:"1"},
-  specials: {anchovies:"8",will:"4"}
+  sizes : {party:"50.0",large:"30.0",medium:"20.0",personal:"10.0",single:"4.0"},
+  crusts: {handtoss:"2.5",thin:"1.5",stuffed:"3.5",orig:"1.5"},
+  cFlavor: {garlicButtery:"0.3",toast:"0.8",cheese:"0.45"},
+  sauce : {mar:"0.1",garlicParmesan:"1",barbaque:"0.35",buffalo:"0.5"},
+  cheese: {light:"0.1",regular:"2",extra:"5.25"},
+  toppings: {pepperoni:"2.5",italian:"1.5",meatball:"0.75",ham:"3.2",bacon:"4.50",chicken:"0.2",beef:"0.35",pork:"0.2",mushrooms:"0.2",onions:"0.4",olives:"0.7",bellPeppers:"0.2",bananaPeppers:"0.45",pineapple:"0.44",jalapeno:"0.55",tomato:"0.5",spinach:"0.2"},
+  specials: {anchovies:"4.5",will:"-20",none:"0.0"}
 }
 
 function Dis() {
-  this.converter = {party:"Party",large:"Large",medium:"Medium",personal:"Personal",slice:"Single Slice",handtoss:"Hand Tossed",thin:"Thin 'N Crispy" ,stuffed:"Stuffed Crust",orig:"Original Pan",garlicButtery:"Garlic Buttery",toast:"Toasted Parmesan",cheese:"Cheesy 'N Loaded",mar:"Classic Marinara",garlicParmesan:"Garlic Parmesan",barbaque:"Barbeque",buffalo:"Buffalo",light:"Light",regular:"Cheese",extra:"Extra",pepperoni:"Pepperoni",italian:"Italian Sausage",meatball:"Meatball",ham:"Ham",bacon:"Bacon",chicken:"Grilled Chicken",beef:"Beef",pork:"Pork",mushrooms:"Mushrooms",onions:"Red Onions",olives:"Mediterranean Black Olives",bellPeppers:"Green Bell Peppers",bananaPeppers:"Banana Peppers",pineapple:"Pineapple",jalapeno:"Jalapeno Peppers",tomato:"Roma Tomatoes",spinach:"Roasted Spinach",anchovies:"Anchovies",will:"Will to Live"}
+  this.converter = {party:"Party",large:"Large",medium:"Medium",personal:"Personal",slice:"Single Slice",handtoss:"Hand Tossed",thin:"Thin 'N Crispy" ,stuffed:"Stuffed Crust",orig:"Original Pan",garlicButtery:"Garlic Buttery",toast:"Toasted Parmesan",cheese:"Cheesy 'N Loaded",mar:"Classic Marinara",garlicParmesan:"Garlic Parmesan",barbaque:"Barbeque",buffalo:"Buffalo",light:"Light",regular:"Cheese",extra:"Extra",pepperoni:"Pepperoni",italian:"Italian Sausage",meatball:"Meatball",ham:"Ham",bacon:"Bacon",chicken:"Grilled Chicken",beef:"Beef",pork:"Pork",mushrooms:"Mushrooms",onions:"Red Onions",olives:"Mediterranean Black Olives",bellPeppers:"Green Bell Peppers",bananaPeppers:"Banana Peppers",pineapple:"Pineapple",jalapeno:"Jalapeno Peppers",tomato:"Roma Tomatoes",spinach:"Roasted Spinach",anchovies:"Anchovies",will:"Will to Live",none:"none"}
   this.controlCurrent = 0;
 }
 
@@ -74,8 +74,6 @@ Dis.prototype.convert = function(item) {
 Dis.prototype.resetmenu = function() {
   this.controlCurrent = 0;
 }
-
-
 
 $(document).ready(function(){
 
@@ -103,12 +101,13 @@ $(document).ready(function(){
       console.log(cart.items[i]);
       topping = ""
       cart.items[i].toppings.forEach(top => {
-        topping += `<li>${dis.convert(top)}</li>`
+        topping += `<li>${dis.convert(top)}<span class="topcost">$${PriceBook.toppings[top]}</span></li>`
       })
-      $("#cart>ul").append(`<li class="${i}"><h3>${dis.convert(cart.items[i].cFlavor)} ${dis.convert(cart.items[i].crusts)} ${dis.convert(cart.items[i].size)} pizza  Cost:${cart.items[i].cost}</h3><ul><h4>Toppings</h4>${topping}<li>Specials: ${dis.convert(cart.items[i].specials)}</li></ul></li>`)
+      const special = cart.items[i].specials;
+      $("#cart>ul").append(`<li class="${i}"><h3>${dis.convert(cart.items[i].cFlavor)} ${dis.convert(cart.items[i].crusts)} ${dis.convert(cart.items[i].size)} pizza </h3><ul><h4>Toppings</h4>${topping}<li>Specials: ${dis.convert(cart.items[i].specials)}<span class="topcost">$${PriceBook.specials[special]}</span></li></ul><div class="itemAmount">Cost:$<span>${cart.items[i].cost}</span></li>`)
     }
     cart.getTotal();
-    $("#carttotal").text(cart.total)
+    $("#carttotal").html(`$${cart.total}`);
     $("#cart").show();
   });
 
