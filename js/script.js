@@ -1,10 +1,3 @@
-/* Cart Objects contains all pizzas added to the cart, the active pizza being worked on, the total cost for all pizzas.
-Functions:
-  getTotal - adds all costs of pizzas in items and sets to this.total 
-  setActive - sets a inputted pizzas as the active pizzas. this allows it to persist even when closing the pizza editor and allows the active pizzas to be targeted more easily across other functions
-  addToOrder - gets a pizza object (right now just the active but later functionality could add the ability to edit the pizza after it is in reciept.)
-*/
-
 //this is a replacement cypher that I use for price calculation this should later be replaced with a server call to get the prices
 const PriceBook = {
   sizes : {party:"25.0",large:"20.0",medium:"13.0",personal:"8.0",slice:"2.5"},
@@ -16,6 +9,12 @@ const PriceBook = {
   specials: {anchovies:"4.5",will:"-20",none:"0.0"}
 }
 
+/* Cart Objects contains all pizzas added to the cart, the active pizza being worked on, the total cost for all pizzas.
+Functions:
+  getTotal - adds all costs of pizzas in items and sets to this.total 
+  setActive - sets a inputted pizzas as the active pizzas. this allows it to persist even when closing the pizza editor and allows the active pizzas to be targeted more easily across other functions
+  addToOrder - gets a pizza object (right now just the active but later functionality could add the ability to edit the pizza after it is in reciept.)
+*/
 function Cart() {
   this.items = [];
   this.currentindex = 0;
@@ -23,6 +22,7 @@ function Cart() {
   this.active = {};
 }
 
+//gets total from each pizza.cost in items
 Cart.prototype.getTotal = function() {
   let total = 0;
   this.items.forEach(item => {
@@ -31,6 +31,7 @@ Cart.prototype.getTotal = function() {
   this.total = total.toFixed(2);
 }
 
+//sets input pizza object as active in cart
 Cart.prototype.setActive = function(pizza) {
   this.active = pizza;
 }
@@ -89,6 +90,9 @@ Pizza.prototype.toggleSpec = function(itemToAdd) {
   } else this.specials.push(itemToAdd)
 }
 
+//Object for handling visual related variables and functions for the pizza graphic and the pizza builder
+//convert is for converting the database names to the text as presented in the receipt.
+//visualconverter is for converting the database names to the names of the svg toppings saved in img/
 function Dis() {
   this.converter = {party:"Party Pizza",large:"Large Pizza",medium:"Medium Pizza",personal:"Personal Pizza",slice:"Single Slice",handtoss:"Hand Tossed",thin:"Thin 'N Crispy" ,stuffed:"Stuffed Crust",orig:"Original Pan",garlicButtery:"Garlic Buttery",toast:"Toasted Parmesan",cheese:"Cheesy 'N Loaded",mar:"Classic Marinara",garlicParmesan:"Garlic Parmesan",barbaque:"Barbeque",buffalo:"Buffalo",light:"Light",regular:"Cheese",extra:"Extra",pepperoni:"Pepperoni",italian:"Italian Sausages",meatball:"Meatballs",ham:"Ham",bacon:"Bacon",chicken:"Grilled Chicken",beef:"Beef",pork:"Pork",mushrooms:"Mushrooms",onions:"Red Onions",olives:"Mediterranean Black Olives",bellPeppers:"Green Bell Peppers",bananaPeppers:"Banana Peppers",pineapple:"Pineapple",jalapeno:"Jalapeno Peppers",tomato:"Roma Tomatoes",spinach:"Roasted Spinach",anchovies:"Anchovies",will:"Will to Live",none:"none"}
   this.visualconverter = {pepperoni:"pepperoni.svg",italian:"sausage.svg",meatball:"meatball.svg",ham:"meat2.svg",bacon:"bacon.svg",chicken:"chicken.svg",beef:"meat1.svg",pork:"meat1.svg",mushrooms:"mushroom.svg",onions:"onion.svg",olives:"olives.svg",bellPeppers:"bellpepper.svg",bananaPeppers:"banpepper.svg",pineapple:"pinapple.svg",jalapeno:"pepper.svg",tomato:"tomato.svg",spinach:"green.svg",anchovies:"anchovies.svg"}
@@ -101,6 +105,7 @@ function Dis() {
   this.topping = [];
 }
 
+//resets the visual properties of the pizza graphic without needing to call a new Dis object
 Dis.prototype.new = function() {
   change = document.documentElement
   this.pizzaSize = 500;
@@ -120,14 +125,17 @@ Dis.prototype.new = function() {
   $(".selected").removeClass("selected");
 }
 
+//converts given string item to the string to be displayed on the receipt using the converter replacement cypher
 Dis.prototype.convert = function(item) {
   return this.converter[item]
 }
 
+//resets the pizza toppings menu selector
 Dis.prototype.resetmenu = function() {
   this.controlCurrent = 0;
 }
 
+//capable of adding multiple toppings to pizza graphic. If itemToAdd is in this.toppings it removes it from list and adds it if it isnt. Then using a for loop it builds a style made out of a string of url links to apply to the pizza topping div
 Dis.prototype.addtopping = function(itemToAdd) {
   if (this.topping.includes(itemToAdd)) this.topping.splice(this.topping.indexOf(itemToAdd),1)
   else this.topping.unshift(itemToAdd)
@@ -140,7 +148,7 @@ Dis.prototype.addtopping = function(itemToAdd) {
 };
 
 //this function is called everythime a object is clicked in the handler for adding options to the pizza in the pizza maker.
-//The way I am handling making the pizza graphic is pretty sketchy and I am looking for a better way to do this like svg generation.
+//The way I am handling making the pizza graphic is pretty sketchy and I am looking for a better way to do this.
 //Currently it applies more background images to a positioned div that each topic is using.
 Dis.prototype.AddtoPizza = function(typeToAdd,itemToAdd) {
   change = document.documentElement
@@ -168,16 +176,16 @@ Dis.prototype.AddtoPizza = function(typeToAdd,itemToAdd) {
   else if (typeToAdd == "crusts") {
     switch(itemToAdd) {
       case "handtoss":
-        this.pizzaborder = 25;
+        this.pizzaborder = this.pizzaSize * 0.05;
         break;
       case "thin":
-        this.pizzaborder = 10;
+        this.pizzaborder = this.pizzaSize * 0.02;
         break;
       case "stuffed":
-        this.pizzaborder = 40;
+        this.pizzaborder = this.pizzaSize * 0.1;
         break;
       case "orig":
-        this.pizzaborder = 20;
+        this.pizzaborder = this.pizzaSize * 0.04;
         break;
     }
     change.style.setProperty('--pizza-crust',`${this.pizzaborder}px`);
@@ -186,7 +194,7 @@ Dis.prototype.AddtoPizza = function(typeToAdd,itemToAdd) {
   else if (typeToAdd == "cFlavor") {
     switch(itemToAdd) {
       case "garlicButtery":
-        this.crustcolor = `#e2cdb1`;
+        this.crustcolor = `#D8BC97`;
         break;
       case "toast":
         this.crustcolor = `#e4924f`;
@@ -240,22 +248,21 @@ Dis.prototype.AddtoPizza = function(typeToAdd,itemToAdd) {
 
 
 $(document).ready(function(){
-
   $("#control>div").hide();
   $("#control>div.0").show();
   $("#cart").hide();
   $(".pizzamaker").hide();
 
+  //database objects
   let cart = new Cart();
   let dis = new Dis;
 
+  //buttons inside make pizza control, handles moving back and forth between pizza option menus and 
   $(".control").on("click", function() {
     if (this.getAttribute("id") == "back" && dis.controlCurrent > 0) dis.controlCurrent -= 1;
     else if (this.getAttribute("id") == "next" && dis.controlCurrent < 6) dis.controlCurrent += 1;
-
     $("#control>div").hide();
     $(`#control>div.${dis.controlCurrent}`).show();
-
     if (dis.controlCurrent == 6) $(this).css('visibility', 'hidden');
     else if (dis.controlCurrent == 0) $(this).css('visibility', 'hidden');
     else $(".control").css('visibility', 'visible');
@@ -318,11 +325,11 @@ $(document).ready(function(){
     const type = parent[0].getAttribute("id");
     if (type=="toppings") {
       $(this).toggleClass("selected");
-      cart.active.ToggleTop(itemToAdd);
+      cart.active.toggleTop(itemToAdd);
     }
     else if (type=="specials") {
       $(this).toggleClass("selected");
-      cart.active.ToggleSpec(itemToAdd);
+      cart.active.toggleSpec(itemToAdd);
     }
     else {
       $(`#${itemToAdd}`).siblings().removeClass("selected");
