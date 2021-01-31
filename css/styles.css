@@ -141,6 +141,9 @@ main button:hover {
   border: none;
   background-color: rgb(226, 205, 177);
   outline: none;
+  font-weight: 900;
+  font-size: 50px;
+  color:brown;
 }
 
 #control>div>ul {

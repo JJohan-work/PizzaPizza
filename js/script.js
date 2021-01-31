@@ -22,6 +22,7 @@ Cart.prototype.getTotal = function() {
 Cart.prototype.setActive = function(pizza) {
   this.active = pizza;
 }
+
 //current index increment is technically not needed but will be useful if ability to edit orders is later added
 Cart.prototype.addToOrder = function(pizza) {
   this.items[this.currentindex] = pizza;
@@ -58,9 +59,9 @@ Pizza.prototype.calcprice = function(priceBook) {
 
   this.cost = price.toFixed(2);
 }
-
-Pizza.prototype.add = function(type,stuff) {
-  this[type] = stuff;
+//
+Pizza.prototype.add = function(typeofItem,itemToAdd) {
+  this[typeofItem] = itemToAdd;
 };
 
 Pizza.prototype.ToggleTop = function(stuff) {
@@ -135,7 +136,8 @@ Dis.prototype.addtopping = function(itemToAdd) {
   document.documentElement.style.setProperty('--topping',addString);
 };
 
-
+//this function is called everythime a object is clicked in the handler for adding options to the pizza in the pizza maker.
+//The way I am handling making the pizza graphic is pretty sketchy and I am looking for a better way to do this like svg generation.
 Dis.prototype.AddtoPizza = function(typeToAdd,itemToAdd) {
   change = document.documentElement
   if (typeToAdd == "size") {
@@ -301,6 +303,7 @@ $(document).ready(function(){
         cart.addToOrder(cart.active);
         cart.setActive({});
         dis.new();
+        $("#will").addClass("hidden")
     }, 1500);
     }
   });
@@ -334,11 +337,15 @@ $(document).ready(function(){
     }, 1500);
   });
 
+
+  //this is a handler just for fun and can be cleanly removed without causing any issues(tip try clicking the pizza)
   $('#completepizza').on( "click",function(){
     $('#completepizza').toggleClass('rotate');
     cart.active.rotate += 1;
-    if (cart.active.rotate >= 5) $("#will").removeClass("hidden");
-    // setTimeout(function(){$('#completepizza').removeClass('rotate');}, 2000);
+    $('#completepizza').css("pointer-events","none");
+    if (cart.active.rotate > 8){
+      $("#will").removeClass("hidden");}
+    setTimeout(function() {$('#completepizza').css("pointer-events","auto")}, 1500);
 });
 
 });

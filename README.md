@@ -5,7 +5,7 @@
 * * *
 
 ## Description  
-  Custom make a pizza and add ingredients. Upon checkout get a price calculated from size and toppings.
+  Custom make pizzas and add ingredients.Add as many Pizzas as you want. Upon checkout get a price calculated from size, crust, dough flavor, sauce and toppings.
 
 * * *
 
@@ -17,11 +17,16 @@
 
 * * *
 ## Specs:
-### Cart
+### Cart  
+Cart contains all objects and persists without reset until page refreshes
+|   |   |Input|Expect|
+|---|---|---|---|
+|new Cart()|   ||this.items = [], this.currentindex = 0, this.total = 0, this.active = {}|
+
 |   |   |   |   |
 |---|---|---|---|
 #### Name: Cart.prototype.getTotal():
-#### Describe: Sets this.total by imcrementing through all Pizza objects in this.items and adds Pizza.cost to total. Pizza.cost is a string and total is saved as float No input or Output
+#### Describe: Sets this.total by imcrementing through all Pizza objects in this.items and adds Pizza.cost to total. Pizza.cost is a string and total is saved as float No input or return
 |   |   |Input|Expect|
 |---|---|---|---|
 |getTotal()|   |this.items = {pizza.cost="15.5",pizza="27.5",pizza.cost="16.2"}|this.total="59.2"|
@@ -29,7 +34,7 @@
 |   |   |   |   |
 |---|---|---|---|
 #### Name: Cart.prototype.setActive(pizza)
-#### Describe: gets a Pizza object and sets it to Cart.active.
+#### Describe: Gets a Pizza object and sets it to Cart.active. No return
 |   |   |Input|Expect|
 |---|---|---|---|
 |setActive(pizza)|   |inputPizza|this.active="inputPizza"|
@@ -37,12 +42,17 @@
 |   |   |   |   |
 |---|---|---|---|
 #### Name: Cart.prototype.addToOrder(pizza)
-#### Describe: gets a Pizza object and adds it to this.items array under index of this.currentindex. Then increments this.currentIndex by one.
+#### Describe: Gets a Pizza object and adds it to this.items array under index of this.currentindex. Then increments this.currentIndex by one. No return
 |   |   |Input|Expect|
 |---|---|---|---|
 |addToOrder(pizza)|   |inputPizza|this.items=[inputPizza]|
 
 ### Pizza
+Pizza is an object that holds all properties and options a pizza can have. The receipt and graphic both pull data from the object when it is in Cart.items or set to Cart.active
+|   |   |Input|Expect|
+|---|---|---|---|
+|new Pizza()|   ||this.size = ; this.crusts = ; this.cFlavor = ; this.sauce = ; this.cheese  = ; this.toppings = []; this.specials = []; this.cost = 0; this.rotate = 0;|
+
 |   |   |   |   |
 |---|---|---|---|
 #### Name: Pizza.prototype.calcprice(priceBook)
@@ -51,6 +61,24 @@
 |---|---|---|---|
 |calcprice(priceBook)|   |priceBook|this.cost=[]|
 
+|   |   |   |   |
+|---|---|---|---|
+#### Name: Pizza.prototype.add(typeofItem,itemToAdd)
+#### Describe: Sets string itemToAdd under the key of typeofItem to the pizza object. No return
+|   |   |Input|Expect|
+|---|---|---|---|
+|add(typeofItem,itemToAdd)|   |add("size","large")|this.size = "large"|
+
+
+### Dis
+
+|   |   |   |   |
+|---|---|---|---|
+#### Name: Dis.prototype.AddtoPizza(typeToAdd,itemToAdd)
+#### Describe:For every button in the pizza controller this has a branched path which modifies Dis properties and then applies the relevent properties to the graphic. Most of the toppings are added in by appling multiple background images to an invisible div.
+|   |   |Input|Expect|
+|---|---|---|---|
+|   |   |Dis.AddtoPizza("size","large")|this.pizzaSize = 500|
 * * *
 
 ## Technologies used
