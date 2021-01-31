@@ -1,8 +1,13 @@
-// Cart Objects contains all pizzas added to the cart
+/* Cart Objects contains all pizzas added to the cart, the active pizza being worked on, the total cost for all pizzas.
+Functions:
+  getTotal - adds all costs of pizzas in items and sets to this.total 
+  setActive - sets a inputted pizzas as the active pizzas. this allows it to persist even when closing the pizza editor and allows the active pizzas to be targeted more easily across other functions
+  addToOrder - gets a pizza object (right now just the active but later functionality could add the ability to edit the pizza after it is in reciept.)
+*/
 function Cart() {
   this.items = [];
   this.currentindex = 0;
-  this.total = {};
+  this.total = 0;
   this.active = {};
 }
 
@@ -17,7 +22,7 @@ Cart.prototype.getTotal = function() {
 Cart.prototype.setActive = function(pizza) {
   this.active = pizza;
 }
-
+//current index increment is technically not needed but will be useful if ability to edit orders is later added
 Cart.prototype.addToOrder = function(pizza) {
   this.items[this.currentindex] = pizza;
   this.currentindex += 1;
@@ -35,6 +40,7 @@ function Pizza() {
   this.rotate = 0;
 }
 
+// calculates price of pizza by reading all of pizza objects attributes. needs priceBook which is a object that acts as a replacement cypher. Each attribute needs to be in the priceBook as a key which can then be converted into its equivelent price.
 Pizza.prototype.calcprice = function(priceBook) {
   price = 0;
   price += parseFloat(priceBook.sizes[this.size]);
@@ -43,14 +49,13 @@ Pizza.prototype.calcprice = function(priceBook) {
   price += parseFloat(priceBook.sauce[this.sauce]);
   price += parseFloat(priceBook.cheese[this.cheese]);
 
-  console.log(this.specials);
-  // this.specials.forEach(top => {
-  //   price += parseFloat(priceBook.specials[top])
-  // })
-  
+  this.specials.forEach(top => {
+    price += parseFloat(priceBook.specials[top])
+  })
   this.toppings.forEach(top => {
     price += parseFloat(priceBook.toppings[top])
   })
+
   this.cost = price.toFixed(2);
 }
 

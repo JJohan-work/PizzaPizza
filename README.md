@@ -17,16 +17,40 @@
 
 * * *
 ## Specs:
-### Describe: Cart
-#### Test: Creates the cart object that holds all added pizzas
+### Cart
+|   |   |   |   |
+|---|---|---|---|
+#### Name: Cart.prototype.getTotal():
+#### Describe: Sets this.total by imcrementing through all Pizza objects in this.items and adds Pizza.cost to total. Pizza.cost is a string and total is saved as float No input or Output
+|   |   |Input|Expect|
+|---|---|---|---|
+|getTotal()|   |this.items = {pizza.cost="15.5",pizza="27.5",pizza.cost="16.2"}|this.total="59.2"|
 
-### Describe: Cart.getTotal
-#### Test: gets the total price from the items in the cart
+|   |   |   |   |
+|---|---|---|---|
+#### Name: Cart.prototype.setActive(pizza)
+#### Describe: gets a Pizza object and sets it to Cart.active.
+|   |   |Input|Expect|
+|---|---|---|---|
+|setActive(pizza)|   |inputPizza|this.active="inputPizza"|
 
+|   |   |   |   |
+|---|---|---|---|
+#### Name: Cart.prototype.addToOrder(pizza)
+#### Describe: gets a Pizza object and adds it to this.items array under index of this.currentindex. Then increments this.currentIndex by one.
+|   |   |Input|Expect|
+|---|---|---|---|
+|addToOrder(pizza)|   |inputPizza|this.items=[inputPizza]|
 
-### Describe: Pizza
+### Pizza
+|   |   |   |   |
+|---|---|---|---|
+#### Name: Pizza.prototype.calcprice(priceBook)
+#### Describe: Takes priceBook as input which acts as a replacement cypher that converts all pizza options added during selectiona and converts them to prices which is then added to this.cost of the pizza object.
+|   |   |Input|Expect|
+|---|---|---|---|
+|calcprice(priceBook)|   |priceBook|this.cost=[]|
 
-### Describe: 
 * * *
 
 ## Technologies used
