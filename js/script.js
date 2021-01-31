@@ -1,3 +1,4 @@
+// Cart Objects contains all pizzas added to the cart
 function Cart() {
   this.items = [];
   this.currentindex = 0;
@@ -29,8 +30,9 @@ function Pizza() {
   this.sauce = "";
   this.cheese = "";
   this.toppings = [];
-  this.specials = "none";
+  this.specials = [];
   this.cost = 0;
+  this.rotate = 0;
 }
 
 Pizza.prototype.calcprice = function(priceBook) {
@@ -40,7 +42,12 @@ Pizza.prototype.calcprice = function(priceBook) {
   price += parseFloat(priceBook.cFlavor[this.cFlavor]);
   price += parseFloat(priceBook.sauce[this.sauce]);
   price += parseFloat(priceBook.cheese[this.cheese]);
-  price += parseFloat(priceBook.specials[this.specials]);
+
+  console.log(this.specials);
+  // this.specials.forEach(top => {
+  //   price += parseFloat(priceBook.specials[top])
+  // })
+  
   this.toppings.forEach(top => {
     price += parseFloat(priceBook.toppings[top])
   })
@@ -48,8 +55,7 @@ Pizza.prototype.calcprice = function(priceBook) {
 }
 
 Pizza.prototype.add = function(type,stuff) {
-  if (type === "toppings" && this.toppings.includes(stuff) !== true) this.toppings.push(stuff);
-  else if (type !== "toppings") this[type] = stuff;
+  this[type] = stuff;
 };
 
 Pizza.prototype.ToggleTop = function(stuff) {
@@ -58,8 +64,14 @@ Pizza.prototype.ToggleTop = function(stuff) {
   } else this.toppings.push(stuff)
 }
 
+Pizza.prototype.ToggleSpec = function(stuff) {
+  if (this.specials.includes(stuff)) {
+    this.specials.splice(this.toppings.indexOf(stuff),1)
+  } else this.specials.push(stuff)
+}
+
 const PriceBook = {
-  sizes : {party:"50.0",large:"30.0",medium:"20.0",personal:"10.0",slice:"2.5"},
+  sizes : {party:"25.0",large:"20.0",medium:"13.0",personal:"8.0",slice:"2.5"},
   crusts: {handtoss:"2.5",thin:"1.5",stuffed:"3.5",orig:"1.5"},
   cFlavor: {garlicButtery:"0.3",toast:"0.8",cheese:"0.45"},
   sauce : {mar:"0.1",garlicParmesan:"1",barbaque:"0.35",buffalo:"0.5"},
@@ -70,28 +82,31 @@ const PriceBook = {
 
 function Dis() {
   this.converter = {party:"Party Pizza",large:"Large Pizza",medium:"Medium Pizza",personal:"Personal Pizza",slice:"Single Slice",handtoss:"Hand Tossed",thin:"Thin 'N Crispy" ,stuffed:"Stuffed Crust",orig:"Original Pan",garlicButtery:"Garlic Buttery",toast:"Toasted Parmesan",cheese:"Cheesy 'N Loaded",mar:"Classic Marinara",garlicParmesan:"Garlic Parmesan",barbaque:"Barbeque",buffalo:"Buffalo",light:"Light",regular:"Cheese",extra:"Extra",pepperoni:"Pepperoni",italian:"Italian Sausages",meatball:"Meatballs",ham:"Ham",bacon:"Bacon",chicken:"Grilled Chicken",beef:"Beef",pork:"Pork",mushrooms:"Mushrooms",onions:"Red Onions",olives:"Mediterranean Black Olives",bellPeppers:"Green Bell Peppers",bananaPeppers:"Banana Peppers",pineapple:"Pineapple",jalapeno:"Jalapeno Peppers",tomato:"Roma Tomatoes",spinach:"Roasted Spinach",anchovies:"Anchovies",will:"Will to Live",none:"none"}
-  this.visualconverter = {light:"lCheese.svg",regular:"rCheese.svg",extra:"eCheese.svg",pepperoni:"pepperoni.svg",italian:"pepperoni.svg",meatball:"pepperoni.svg",ham:"meat2.svg",bacon:"meat2.svg",chicken:"chicken.svg",beef:"meat1.svg",pork:"meat1.svg",mushrooms:"mushroom.svg",onions:"onion.svg",olives:"olives.svg",bellPeppers:"pepper.svg",bananaPeppers:"pepper.svg",pineapple:"pinapple.svg",jalapeno:"pepper.svg",tomato:"tomato.svg",spinach:"green.svg"}
+  this.visualconverter = {pepperoni:"pepperoni.svg",italian:"sausage.svg",meatball:"meatball.svg",ham:"meat2.svg",bacon:"bacon.svg",chicken:"chicken.svg",beef:"meat1.svg",pork:"meat1.svg",mushrooms:"mushroom.svg",onions:"onion.svg",olives:"olives.svg",bellPeppers:"bellpepper.svg",bananaPeppers:"banpepper.svg",pineapple:"pinapple.svg",jalapeno:"pepper.svg",tomato:"tomato.svg",spinach:"green.svg",anchovies:"anchovies.svg"}
   this.controlCurrent = 0;
   this.pizzaSize = 500;
   this.pizzaborder = 20;
   this.crustcolor = "#ffb428";
   this.covering = "burlywood";
   this.cheese = 'url("../img/lCheese.svg")';
-  this.topping = ["",""];
+  this.topping = [];
 }
 
 Dis.prototype.new = function() {
+  change = document.documentElement
   this.pizzaSize = 500;
   this.pizzaborder = 20;
-  this.crustcolor = "#ffb428";
+  this.crustcolor = "burlywood";
   this.covering = "burlywood";
   this.cheese = '';
+  this.topping = [];
   change.style.setProperty('--pizza-size',`${this.pizzaSize+this.pizzaborder*2}px`);
   change.style.setProperty('--pizza-crust',`${this.pizzaborder}px`);
   change.style.setProperty('--pizza-size2',`${this.pizzaSize}px`);
   change.style.setProperty('--crust-type',this.crustcolor);
   change.style.setProperty('--cheese',this.cheese);
   change.style.setProperty('--covering',this.covering);
+  change.style.setProperty('--topping',"url('')");
   $("#pizzaslice").hide();
   $(".selected").removeClass("selected");
 }
@@ -112,14 +127,12 @@ Dis.prototype.addtopping = function(itemToAdd) {
     addString += `url('../img/${this.visualconverter[this.topping[i]]}')`
     if (i+1 !== this.topping.length) {addString += ",";}
   }
-  document.documentElement.style.setProperty('--cheese',addString);
-  console.log(addString)
+  document.documentElement.style.setProperty('--topping',addString);
 };
 
 
 Dis.prototype.AddtoPizza = function(typeToAdd,itemToAdd) {
   change = document.documentElement
-  console.log(itemToAdd)
   if (typeToAdd == "size") {
     $("#pizzaslice").hide();
     switch(itemToAdd) {
@@ -207,7 +220,9 @@ Dis.prototype.AddtoPizza = function(typeToAdd,itemToAdd) {
   else if (typeToAdd == "toppings") {
     this.addtopping(itemToAdd);
   }
-
+  else if (typeToAdd == "specials" && itemToAdd == "anchovies") {
+    this.addtopping(itemToAdd);
+  }
   }
 
 
@@ -237,19 +252,24 @@ $(document).ready(function(){
 
   $(".opencart").on("click", function() {
     //fill cart with current pizzas in order
-    $("#cart>ul").html("");
-    for (i=0;i<cart.items.length;i++) {
-      topping = ""
-      cart.items[i].toppings.forEach(top => {
-        topping += `<li>${dis.convert(top)}<span class="topcost">$${PriceBook.toppings[top]}</span></li>`
-      })
-      const special = cart.items[i].specials;
-      $("#cart>ul").append(`<li class="${i}"><h3>${dis.convert(cart.items[i].cFlavor)} ${dis.convert(cart.items[i].crusts)} ${dis.convert(cart.items[i].size)}</h3><ul><h4>Toppings</h4>${topping}<li>Specials: ${dis.convert(cart.items[i].specials)}<span class="topcost">$${PriceBook.specials[special]}</span></li></ul><div class="itemAmount">Cost:$<span>${cart.items[i].cost}</span></li>`)
+    if (cart.items.length !== 0) {
+      $("#cart>ul").html("");
+      for (i=0;i<cart.items.length;i++) {
+        let topping = "";
+        let reg = /.[0-9]$/;
+        cart.items[i].toppings.forEach(top => {
+          topping += `<li>${dis.convert(top)}<span class="topcost">$${PriceBook.toppings[top].length==3 ? PriceBook.toppings[top]+"0":PriceBook.toppings[top]}</span></li>`
+        })
+        let specials = "";
+        cart.items[i].specials.forEach(top => {
+          specials += `<li>${dis.convert(top)}<span class="topcost">$${PriceBook.specials[top].length==3 ? PriceBook.specials[top]+"0":PriceBook.specials[top]}</span></li>`
+        })
+        $("#cart>ul").append(`<li class="${i}"><h3>${dis.convert(cart.items[i].cFlavor)} ${dis.convert(cart.items[i].crusts)} ${dis.convert(cart.items[i].size)}</h3><ul><h4>Toppings</h4>${topping}<li>${specials}</li></ul><div class="itemAmount">Cost:$<span>${cart.items[i].cost.length==3 ? cart.items[i].cost+0:cart.items[i].cost}</span></li>`)
     }
     cart.getTotal();
     $("#carttotal").html(`$${cart.total}`);
     $("#cart").show();
-  });
+  }});
 
   $("#closeCart").on("click", function() {
     $("#cart").hide();
@@ -258,7 +278,8 @@ $(document).ready(function(){
   $("#makepizza").on("click", function() {
     dis.resetmenu();
     $("#control>div").hide();
-    $("#back").css('visibility','hidden')
+    $("#back").css('visibility','hidden');
+    $("#next").css('visibility','visible');
     $(`#control>div.${dis.controlCurrent}`).show()
     $(".pizzamaker").show();
     cart.setActive(new Pizza())
@@ -287,6 +308,10 @@ $(document).ready(function(){
       $(this).toggleClass("selected");
       cart.active.ToggleTop(itemToAdd);
     }
+    else if (type=="specials") {
+      $(this).toggleClass("selected");
+      cart.active.ToggleSpec(itemToAdd);
+    }
     else {
       $(`#${itemToAdd}`).siblings().removeClass("selected");
       $(this).addClass("selected");
@@ -300,7 +325,15 @@ $(document).ready(function(){
     $("#completepizza").css("top","1000px");
     setTimeout(function(){
       $(".pizzamaker").hide();
+      $(".control").css('visibility', 'visible');
     }, 1500);
   });
+
+  $('#completepizza').on( "click",function(){
+    $('#completepizza').toggleClass('rotate');
+    cart.active.rotate += 1;
+    if (cart.active.rotate >= 5) $("#will").removeClass("hidden");
+    // setTimeout(function(){$('#completepizza').removeClass('rotate');}, 2000);
+});
 
 });

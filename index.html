@@ -23,6 +23,7 @@
       <div id="pizzaslice" class="hidden"></div>
       <div id="toppinghide">
         <div id="pizzatoppings"></div>
+        <div id="pizzacheese"></div>
       </div>
       <div id="pizza"></div>
     </div>
@@ -39,22 +40,22 @@
         </ul>
       </div>
 
-      <div id="crusts" class="1">
+      <div id="cFlavor" class="1">
+        <h3>Choose A Crust Flavor</h3>
+        <ul>
+          <li id="garlicButtery">Garlic Buttery</li>
+          <li id="toast">Toasted Parmesan</li>
+          <li id="cheese">Cheesy 'n' Loaded</li>
+        </ul>
+      </div>
+
+      <div id="crusts" class="2">
         <h3>Choose A Pizza Crust</h3>
         <ul>
           <li id="handtoss">Hand Tossed</li>
           <li id="thin">Thin 'N Crispy</li>
           <li id="stuffed">Stuffed Crust</li>
           <li id="orig">Original Pan</li>
-        </ul>
-      </div>
-
-      <div id="cFlavor" class="2">
-        <h3>Choose A Crust Flavor</h3>
-        <ul>
-          <li id="garlicButtery">Garlic Buttery</li>
-          <li id="toast">Toasted Parmesan</li>
-          <li id="cheese">Cheesy 'n' Loaded</li>
         </ul>
       </div>
 
@@ -105,7 +106,7 @@
         <h3>Special</h3>
         <ul>
           <li id="anchovies">Anchovies</li>
-          <li id="will">Will To Live</li>
+          <li id="will" class="hidden">Will To Live</li>
         </ul>
       </div>
       <button id="next" class="control">Next</button>
@@ -116,7 +117,7 @@
     <button id="closeCart">Close Cart</button>
     <ul>
     </ul>
-    <h3>Total Cost:<Total:span id="carttotal"></Total:span></h3>
+    <h3>Total Cost:   <Total:span id="carttotal"></Total:span></h3>
     <button id="checkout"">Checkout</button>
   </div>
 
