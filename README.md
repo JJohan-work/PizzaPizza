@@ -69,6 +69,14 @@ Pizza is an object that holds all properties and options a pizza can have. The r
 |---|---|---|---|
 |add(typeofItem,itemToAdd)|   |add("size","large")|this.size = "large"|
 
+|   |   |   |   |
+|---|---|---|---|
+#### Name: Pizza.prototype.toggleTop(itemToAdd)
+#### Describe: Adds toppings to array this.toppings. If already in this.toppings it removes itemToAdd from array
+|   |   |Input|Expect|
+|---|---|---|---|
+|toggleTop(typeofItem,itemToAdd)|   |add("size","large")|this.size = "large"|
+
 
 ### Dis
 

@@ -4,6 +4,18 @@ Functions:
   setActive - sets a inputted pizzas as the active pizzas. this allows it to persist even when closing the pizza editor and allows the active pizzas to be targeted more easily across other functions
   addToOrder - gets a pizza object (right now just the active but later functionality could add the ability to edit the pizza after it is in reciept.)
 */
+
+//this is a replacement cypher that I use for price calculation this should later be replaced with a server call to get the prices
+const PriceBook = {
+  sizes : {party:"25.0",large:"20.0",medium:"13.0",personal:"8.0",slice:"2.5"},
+  crusts: {handtoss:"2.5",thin:"1.5",stuffed:"3.5",orig:"1.5"},
+  cFlavor: {garlicButtery:"0.3",toast:"0.8",cheese:"0.45"},
+  sauce : {mar:"0.1",garlicParmesan:"1",barbaque:"0.35",buffalo:"0.5"},
+  cheese: {light:"0.1",regular:"2",extra:"2.25"},
+  toppings: {pepperoni:"2.5",italian:"1.5",meatball:"0.75",ham:"3.2",bacon:"4.50",chicken:"0.2",beef:"0.35",pork:"0.2",mushrooms:"0.2",onions:"0.4",olives:"0.7",bellPeppers:"0.2",bananaPeppers:"0.45",pineapple:"0.44",jalapeno:"0.55",tomato:"0.5",spinach:"0.2"},
+  specials: {anchovies:"4.5",will:"-20",none:"0.0"}
+}
+
 function Cart() {
   this.items = [];
   this.currentindex = 0;
@@ -29,6 +41,7 @@ Cart.prototype.addToOrder = function(pizza) {
   this.currentindex += 1;
 }
 
+//This creates a new pizza object. The program creates the pizza and sets it to active
 function Pizza() {
   this.size = "";
   this.crusts = "";
@@ -59,31 +72,21 @@ Pizza.prototype.calcprice = function(priceBook) {
 
   this.cost = price.toFixed(2);
 }
-//
+// This function is for every option for the pizza besides toppings and specials which are lists of the itemToAdd. These 
 Pizza.prototype.add = function(typeofItem,itemToAdd) {
   this[typeofItem] = itemToAdd;
 };
 
-Pizza.prototype.ToggleTop = function(stuff) {
-  if (this.toppings.includes(stuff)) {
-    this.toppings.splice(this.toppings.indexOf(stuff),1)
-  } else this.toppings.push(stuff)
+Pizza.prototype.toggleTop = function(itemToAdd) {
+  if (this.toppings.includes(itemToAdd)) {
+    this.toppings.splice(this.toppings.indexOf(itemToAdd),1)
+  } else this.toppings.push(itemToAdd)
 }
 
-Pizza.prototype.ToggleSpec = function(stuff) {
-  if (this.specials.includes(stuff)) {
-    this.specials.splice(this.toppings.indexOf(stuff),1)
-  } else this.specials.push(stuff)
-}
-
-const PriceBook = {
-  sizes : {party:"25.0",large:"20.0",medium:"13.0",personal:"8.0",slice:"2.5"},
-  crusts: {handtoss:"2.5",thin:"1.5",stuffed:"3.5",orig:"1.5"},
-  cFlavor: {garlicButtery:"0.3",toast:"0.8",cheese:"0.45"},
-  sauce : {mar:"0.1",garlicParmesan:"1",barbaque:"0.35",buffalo:"0.5"},
-  cheese: {light:"0.1",regular:"2",extra:"2.25"},
-  toppings: {pepperoni:"2.5",italian:"1.5",meatball:"0.75",ham:"3.2",bacon:"4.50",chicken:"0.2",beef:"0.35",pork:"0.2",mushrooms:"0.2",onions:"0.4",olives:"0.7",bellPeppers:"0.2",bananaPeppers:"0.45",pineapple:"0.44",jalapeno:"0.55",tomato:"0.5",spinach:"0.2"},
-  specials: {anchovies:"4.5",will:"-20",none:"0.0"}
+Pizza.prototype.toggleSpec = function(itemToAdd) {
+  if (this.specials.includes(itemToAdd)) {
+    this.specials.splice(this.toppings.indexOf(itemToAdd),1)
+  } else this.specials.push(itemToAdd)
 }
 
 function Dis() {
@@ -138,6 +141,7 @@ Dis.prototype.addtopping = function(itemToAdd) {
 
 //this function is called everythime a object is clicked in the handler for adding options to the pizza in the pizza maker.
 //The way I am handling making the pizza graphic is pretty sketchy and I am looking for a better way to do this like svg generation.
+//Currently it applies more background images to a positioned div that each topic is using.
 Dis.prototype.AddtoPizza = function(typeToAdd,itemToAdd) {
   change = document.documentElement
   if (typeToAdd == "size") {
